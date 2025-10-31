@@ -2,18 +2,39 @@ import type { Config } from '@jest/types';
 
 const config: Config.InitialOptions = {
     testEnvironment: 'node',
+
     transform: {
-        '^.+\\.(t|j)sx?$': ['@swc/jest', {
-            jsc: {
-                parser: { syntax: 'typescript', decorators: true },
-                transform: { legacyDecorator: true, decoratorMetadata: true },
-                target: 'es2020'
+        '^.+\\.(t|j)sx?$': [
+            '@swc/jest',
+            {
+                jsc: {
+                    parser: {
+                        syntax: 'typescript',
+                        tsx: false,
+                        decorators: true,
+                    },
+                    transform: {
+                        legacyDecorator: true,
+                        decoratorMetadata: true,
+                    },
+                    target: 'es2020',
+                },
+                module: {
+                    type: 'commonjs',
+                },
             },
-            module: { type: 'commonjs' }
-        }]
+        ],
     },
+
+    transformIgnorePatterns: [
+        'node_modules/(?!jstoxml)',
+    ],
+
     setupFiles: ['reflect-metadata'],
-    moduleFileExtensions: ['ts', 'tsx', 'js', 'json']
+
+    moduleFileExtensions: ['ts', 'tsx', 'js', 'json'],
+
+    extensionsToTreatAsEsm: [],
 };
 
 export default config;
